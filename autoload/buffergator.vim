@@ -485,9 +485,14 @@ function! s:NewCatalogViewer(name, title)
         if a:bufinfo['is_' . l:status]
           let l:line_symbols .= s:buffergator_buffer_line_symbols[l:status]
         else
-          let l:line_symbols .= " "
+          let l:line_symbols .= ""
         endif
       endfor
+	  if l:line_symbols == ""
+		  let l:line_symbols .= " "
+	  endif
+
+	  let l:line_symbols .= " "
       return l:line_symbols
     endfunction
 
@@ -1271,14 +1276,13 @@ function! s:NewBufferCatalogViewer()
             endif
 
             let l:bufnum_str = s:_format_filled(l:bufinfo.bufnum, 3, 1, 0)
-            let l:line = "[" . l:bufnum_str . "]"
+            let l:line = ""
 
-            let l:line .= s:_format_filled(self.line_symbols(l:bufinfo),4,-1,0)
+            let l:line .= self.line_symbols(l:bufinfo)
 
             if self.display_regime == "basename"
                 let l:line .= s:_format_align_left(l:bufinfo.basename, self.max_buffer_basename_len, " ")
-                let l:line .= "  "
-                let l:line .= l:bufinfo.parentdir
+                let l:line .= " "
             elseif self.display_regime == "filepath"
                 let l:line .= l:bufinfo.filepath
             elseif self.display_regime == "bufname"
